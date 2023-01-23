@@ -1,9 +1,8 @@
 <?php
-    $page_content = "Staff";
-    $page_title ="Staff Management";
+    $page_content = "Department";
+    $page_title ="Department";
     include('../master/header.php');
     include('../master/navbar.php');
-    include('../../backend/connection.php');
 ?>
 <main>
     <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
@@ -51,22 +50,10 @@
                                             Code
                                         </th>
                                         <th scope="col" class="font-bold text-md py-3 px-6 tracking-wider text-left text-gray-700 uppercase ">
-                                            Staff
+                                            Name
                                         </th>
-                                        <th scope="col" class="font-bold text-md py-3 px-6  tracking-wider text-center text-gray-700 uppercase ">
-                                            Role
-                                        </th>
-                                        <th scope="col" class="font-bold text-md py-3 px-6  tracking-wider  text-left text-gray-700 uppercase ">
-                                            Email
-                                        </th>
-                                        <th scope="col" class="font-bold text-md py-3 px-6  tracking-wider  text-left text-gray-700 uppercase ">
-                                            Phone
-                                        </th>
-                                        <th scope="col" class="font-bold text-md py-3 px-6  tracking-wider  text-left text-gray-700 uppercase ">
-                                            Department
-                                        </th>
-                                        <th scope="col" class="font-bold text-md py-3 px-6  tracking-wider  text-center text-gray-700 uppercase ">
-                                            Status
+                                        <th scope="col" class="font-bold text-md py-3 px-6  tracking-wider text-left text-gray-700 uppercase ">
+                                            Description
                                         </th>
                                         <th scope="col" class="p-4">
                                             <span class="sr-only">Edit</span>
@@ -108,7 +95,7 @@ $(document).ready(function() {
     }
     var emptyRow = `
         <tr class="hover:bg-gray-100">
-            <td colspan="8" class="py-2 px-6 text-sm text-center font-medium text-gray-900 whitespace-nowrap ">
+            <td colspan="4" class="py-2 px-6 text-sm text-center font-medium text-gray-900 whitespace-nowrap ">
                 No record found 👻
             </td>
         </tr>
@@ -117,42 +104,16 @@ $(document).ready(function() {
         var Row = `
             <tr class="hover:bg-gray-100">
                     <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap ">
-                        ${data['code']}
+                        ${data['code_name']}
                     </td>
                     <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap ">
                         ${data['name']}
                     </td>
-                        <td class="py-2 px-6 text-sm  text-center font-medium text-gray-900 whitespace-nowrap ">
-                <div class=" text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-orange-200 text-orange-700 rounded-full   ${data['role']=="Admin"?'':'hidden' }">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity mr-2">
-                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-                    </svg>
-                        ${data['role']}
-                </div>
-                <div class="text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-blue-200 text-blue-700 rounded-full  ${data['role']=="Staff"?'':'hidden' }"">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hard-drive mr-2">
-                            <line x1="22" y1="12" x2="2" y2="12"></line>
-                            <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
-                            <line x1="6" y1="16" x2="6.01" y2="16"></line>
-                            <line x1="10" y1="16" x2="10.01" y2="16"></line>
-                        </svg>
-                    ${data['role']}
-                    </div>
-                </td>
                     <td class="py-2 px-6 text-sm  text-left font-medium text-gray-900 whitespace-nowrap ">
-                    ${data['email']}
-            </td>
-            <td class="py-2 px-6 text-sm  text-left font-medium text-gray-900 whitespace-nowrap ">
-                ${data['phone']}
-            </td>
-            <td class="py-2 px-6 text-sm  text-left font-medium text-gray-900 whitespace-nowrap ">
-                ${data['depart_name']!=null?data['depart_name']:""}
-            </td>
-            <td class="py-2 px-6 text-sm text-center font-medium text-gray-900 whitespace-nowrap ">
-                <div class=" hover:underline ${data['status']==1?'text-green-400':'text-gray-400'}">${data['status']==1?'Active':'Inactive'}</div>
+                    ${data['description']}
             </td>
             <td class="py-2 px-6 text-sm font-medium text-right whitespace-nowrap flex space-x-2 items-center justify-end">
-            <a href="/staffAttendence/frontend/user/update?id=${data['id']}" class=" hover:underline text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-1 ">Edit</a>
+            <a href="/staffAttendence/frontend/department/update?id=${data['id']}" class=" hover:underline text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-1 ">Edit</a>
             <div data-id="${data['id']}" onclick="$.fn.delete(${data['id']})" class="btn-deleted  cursor-pointer text-white bg-red-800 hover:bg-red-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-1 ">Delete</div>
             </td>
             </tr>
@@ -164,7 +125,7 @@ $(document).ready(function() {
         $.fn.startloading();
         $.ajax({
             type: "GET",
-            url: '/staffAttendence/backend/userHandler.php',
+            url: '/staffAttendence/backend/departmentHandler.php',
             data: {
                 mode: 'list',
             },
@@ -198,7 +159,7 @@ $(document).ready(function() {
                     console.log($(this).val())
                     $.ajax({
                         type: "GET",
-                        url: '/staffAttendence/backend/userHandler.php',
+                        url: '/staffAttendence/backend/departmentHandler.php',
                         data: {
                             mode: 'search',
                             search: search
@@ -214,6 +175,7 @@ $(document).ready(function() {
                                 return;
                             }
                             if (response) {
+
                                 $.each(response, function(indexes, data) {
                                     $("#datatable").append(
                                         $.fn.RowTable(data)
@@ -231,7 +193,7 @@ $(document).ready(function() {
         }, 1000);
     });
     $('#btn-add').click(function() {
-        document.location = "/staffAttendence/frontend/user/create"
+        document.location = "/staffAttendence/frontend/department/create"
     });
     $('.btn-edit-row').click(function(e) {
         // console.log($(this)[0].nextSibling.nextSibling.value)
@@ -239,7 +201,7 @@ $(document).ready(function() {
         e.preventDefault();
         $.ajax({
             type: "GET",
-            url: '/staffAttendence/backend/userHandler.php',
+            url: '/staffAttendence/backend/departmentHandler.php',
             data: {
                 mode: 'edit',
                 id: id
@@ -257,7 +219,7 @@ $(document).ready(function() {
         $.fn.startloading();
         $.ajax({
             type: "POST",
-            url: '/staffAttendence/backend/userHandler.php',
+            url: '/staffAttendence/backend/departmentHandler.php',
             data: {
                 mode: "delete",
                 id: id

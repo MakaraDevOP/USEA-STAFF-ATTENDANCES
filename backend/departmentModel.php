@@ -2,62 +2,53 @@
    include('connection.php');
    include('getIPaddress.php');
    include('getLocation.php');
-   class User  {
+   class Department  {
        private $name;
-       private $role;
-       private $code;
-       private $email;
-       private $phone;
-       private $status;
-       private $password;
-       private $depart_id;
+       private $description;
+       private $code_name;
 
     public function List(){
         $db = new Database();
-        $sql="SELECT * FROM  view_staff_list ORDER BY code ASC";
+        $sql="SELECT * FROM  departments ORDER BY code_name ASC";
         $result = $db->mysqli->query($sql);
         $obj =[];
         while( $row = $result->fetch_assoc()){
            array_push($obj,$row);
         }
         if(empty($obj)){
-          $errorr =  array('data' =>'No record!' );
+             $errorr =  array('data' =>'No record!' );
              exit(json_encode( $errorr));
         }
         echo json_encode($obj);
     }
     public function Insert($data){
         $name =  $data['name'];
-        $code =  $data['code'];
-        $role =  $data['role'];
-        $email =  $data['email'];
-        $phone =  $data['phone'];
-        $status =  $data['status'];
-        $password =  $data['password'];
-        $departID  =$data['department'];
+        $code =  $data['code_name'];
+        $description =  $data['description'];
+
         $db = new Database();
-        $getCode = "SELECT * FROM users WHERE code='$code'";
-        $getEmail = "SELECT * FROM users WHERE email='$email'";
+        $getName = "SELECT * FROM departments WHERE name='$name'";
+        $getCode= "SELECT * FROM departments WHERE code_name='$code'";
         $selectCode =  $db->mysqli->query($getCode); 
-        $selectEmail =  $db->mysqli->query($getEmail); 
+        $selectName =  $db->mysqli->query($getName); 
         // ការកំណត់ មិនស្ទួន  Code 
         if($selectCode->num_rows > 0){
              $errorr =  array('error' =>'This code is already being used' );
             exit(json_encode($errorr));
         }
         // ការកំណត់ មិនស្ទួន Email
-        if($selectEmail->num_rows > 0){
-             $errorr =  array('error' =>'This email is already being used' );
+        if($selectName->num_rows > 0){
+             $errorr =  array('error' =>'This name is already being used' );
             exit(json_encode($errorr));
         } 
-        $sql="INSERT INTO users (name,code ,role,email,phone,password,status,depart_id) VALUES ('$name','$code','$role','$email','$phone','$password','$status','$departID')";
+        $sql="INSERT INTO departments (name,code_name, description) VALUES ('$name','$code','$description')";
         $result = $db->mysqli->query($sql);
         echo json_encode($result);
     }
     public function Edit($data){
         $db = new Database();
         $id = $data['id'];
-        $sql="SELECT * FROM  users WHERE id=$id";
+        $sql="SELECT * FROM  departments WHERE id=$id";
         $result = $db->mysqli->query($sql);
         $row = $result->fetch_assoc();
         echo json_encode($row);
@@ -65,22 +56,18 @@
     public function Update($data){
         $id= $data['id'];
         $name =  $data['name'];
-        $code =  $data['code'];
-        $role =  $data['role'];
-        $email =  $data['email'];
-        $phone =  $data['phone'];
-        $status =  $data['status'];
-        $password =  $data['password'];
-        $departID  =$data['department'];
+        $code =  $data['code_name'];
+        $description =  $data['description'];
+        
         $db = new Database();
-        $sql="UPDATE users  SET name='$name',code='$code',role='$role',email='$email',phone='$phone',password='$password',status ='$status', depart_id='$departID' WHERE id=$id";
+        $sql="UPDATE departments  SET name='$name',code_name='$code',description='$description' WHERE id=$id";
         $result = $db->mysqli->query($sql);
         echo json_encode($result);
     }
     public function Search($data){
         $db = new Database();
         $search = $data['search'];
-        $sql="SELECT * FROM  view_staff_list WHERE id LIKE '%$search%' OR name LIKE '%$search%' OR code LIKE '%$search%'";
+        $sql="SELECT * FROM  departments WHERE  name LIKE '%$search%' OR code_name LIKE '%$search%'";
         $result = $db->mysqli->query($sql);
         $obj =[];
         while( $row = $result->fetch_assoc()){
@@ -95,14 +82,14 @@
     public function Destroy($data){
         $id= $data['id'];        
         $db = new Database();
-        $getUser = "SELECT * FROM users WHERE id=$id";
+        $getUser = "SELECT * FROM departments WHERE id=$id";
         $selectUser =  $db->mysqli->query($getUser); 
         // Existing
         if($selectUser->num_rows < 0){
-             $errorr =  array('error' =>'This staff is not exist' );
+             $errorr =  array('error' =>'This department is not exist' );
             exit(json_encode($errorr));
-        }
-        $sql="DELETE FROM  users WHERE id=$id";
+        } 
+        $sql="DELETE FROM  departments WHERE id=$id";
         $result = $db->mysqli->query($sql);
         echo json_encode($result);
     }

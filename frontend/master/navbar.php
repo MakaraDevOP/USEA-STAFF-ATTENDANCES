@@ -11,8 +11,9 @@
 
                                     <a href="/staffAttendence/frontend/" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium <?php echo $page_content=="Home"? ' bg-gray-800 text-white': ' '   ?>">Dashboard</a>
                                     <a href="/staffAttendence/frontend/user/index.php" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium <?php echo $page_content=="Staff"? ' bg-gray-800 text-white': ' '   ?>">Staff</a>
-                                    <a href="/staffAttendence/frontend/attendences.php" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium <?php echo $page_content=="Attendence"? ' bg-gray-800 text-white': ' '   ?>">Attendence</a>
-                                    <a href="/staffAttendence/frontend/reports.php" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium <?php echo $page_content=="Report Center"? ' bg-gray-800 text-white': ' '   ?>">Reports</a>
+                                    <a href="/staffAttendence/frontend/department/index.php" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium <?php echo $page_content=="Department"? ' bg-gray-800 text-white': ' '   ?>">Department</a>
+                                    <a href="/staffAttendence/frontend/attendence/index.php" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium <?php echo $page_content=="Attendence"? ' bg-gray-800 text-white': ' '   ?>">Attendence</a>
+                                    <a href="/staffAttendence/frontend/report/index.php" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium <?php echo $page_content=="Report Center"? ' bg-gray-800 text-white': ' '   ?>">Reports</a>
                                 </div>
                             </div>
                         </div>

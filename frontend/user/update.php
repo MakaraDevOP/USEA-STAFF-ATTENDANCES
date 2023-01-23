@@ -5,13 +5,11 @@
     include('../master/navbar.php');
     // include('../../backend/connection.php');
 ?>
-    <div class="bg-gray-100 w-full  flex items-center justify-center">
-        <div class="w-full py-8">
-            <div class="bg-white w-5/6 md:w-3/4 lg:w-2/3 xl:w-[500px] 2xl:w-[550px] mt-4 mx-auto px-16 py-8 rounded-lg shadow">
+    <div class="bg-gray-100 w-full  flex items-start justify-center h-[calc(100vh-100px)]">
+        <div class="w-full py-4">
+            <div class="bg-white w-5/6 md:w-3/4 lg:w-2/3 xl:w-[500px] 2xl:w-[550px] mt-4 mx-auto px-16 py-5 rounded-lg shadow">
 
-                <h2 class="text-center text-2xl font-bold tracking-wide text-gray-800">Updae Users</h2>
-                <p class="text-center text-sm text-gray-600 mt-2">Already have an account? <a href="#" class="text-blue-600 hover:text-blue-700 hover:underline" title="Sign In">Sign in here</a></p>
-
+                <h2 class="text-center text-2xl font-bold tracking-wide text-gray-800">Update Users</h2>
                 <form class="my-8 text-sm" id="submitForm">
                     <!-- Mode Action -->
                     <input type="hidden" name="mode" value="update">
@@ -31,6 +29,12 @@
                             <option value="" selected disabled hidden class="text-gray-100">--Select Role--</option>
                             <option value="Admin">Admin</option>
                             <option value="Staff">Staff</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col my-4">
+                        <label for="department" class="text-gray-700">Department</label>
+                        <select name="department" id="department" class="mt-2 p-2 border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 rounded text-sm text-gray-900">
+                            <option value="" selected disabled hidden class="text-gray-100">--Select Department--</option>
                         </select>
                     </div>
                     <div class="flex flex-col my-4">
@@ -66,6 +70,28 @@
     </div>
     <script type="text/javascript">
 $(document).ready(function() {
+    $.fn.GetList = function() {
+        $.ajax({
+            type: "GET",
+            url: '/staffAttendence/backend/departmentHandler.php',
+            data: {
+                mode: 'list',
+            },
+            dataType: "json",
+            success: function(response) {
+                if (response) {
+                    $.each(response, function(indexes, data) {
+                        $("#department").append(
+                            `
+                            <option value="${data.id}">${data.name}</option>
+                            `
+                        );
+                    });
+                }
+            }
+        });
+    }
+    $.fn.GetList();
     /*
     ការចាប់យក​ទិន្នន័យ ពី URL Params
     */
@@ -92,6 +118,7 @@ $(document).ready(function() {
             $('#name').val(response.name);
             $('#code').val(response.code);
             $('#role').val(response.role);
+            $('#department').val(response.depart_id);
             $('#email').val(response.email);
             $('#phone').val(response.phone);
             $('#password').val(response.password);

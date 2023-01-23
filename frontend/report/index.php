@@ -62,9 +62,6 @@
                                         <th scope="col" class="font-bold text-md py-3 px-6  tracking-wider  text-left text-gray-700 uppercase ">
                                             Phone
                                         </th>
-                                        <th scope="col" class="font-bold text-md py-3 px-6  tracking-wider  text-left text-gray-700 uppercase ">
-                                            Department
-                                        </th>
                                         <th scope="col" class="font-bold text-md py-3 px-6  tracking-wider  text-center text-gray-700 uppercase ">
                                             Status
                                         </th>
@@ -103,16 +100,9 @@ $(document).ready(function() {
             text: "Processing......",
             buttons: false,
             closeOnClickOutside: false,
-            timer: 200,
+            timer: 500,
         });
     }
-    var emptyRow = `
-        <tr class="hover:bg-gray-100">
-            <td colspan="8" class="py-2 px-6 text-sm text-center font-medium text-gray-900 whitespace-nowrap ">
-                No record found 👻
-            </td>
-        </tr>
-    `;
     $.fn.RowTable = function(data) {
         var Row = `
             <tr class="hover:bg-gray-100">
@@ -145,9 +135,6 @@ $(document).ready(function() {
             <td class="py-2 px-6 text-sm  text-left font-medium text-gray-900 whitespace-nowrap ">
                 ${data['phone']}
             </td>
-            <td class="py-2 px-6 text-sm  text-left font-medium text-gray-900 whitespace-nowrap ">
-                ${data['depart_name']!=null?data['depart_name']:""}
-            </td>
             <td class="py-2 px-6 text-sm text-center font-medium text-gray-900 whitespace-nowrap ">
                 <div class=" hover:underline ${data['status']==1?'text-green-400':'text-gray-400'}">${data['status']==1?'Active':'Inactive'}</div>
             </td>
@@ -162,6 +149,7 @@ $(document).ready(function() {
 
     $.fn.GetList = function() {
         $.fn.startloading();
+
         $.ajax({
             type: "GET",
             url: '/staffAttendence/backend/userHandler.php',
@@ -170,15 +158,9 @@ $(document).ready(function() {
             },
             dataType: "json",
             success: function(response) {
-                $("#datatable").empty();
-                $.fn.stoploading();
-                if (response.data != undefined) {
-                    $("#datatable").append(
-                        emptyRow
-                    );
-                    return;
-                }
                 if (response) {
+                    $("#datatable").empty();
+                    $.fn.stoploading();
                     $.each(response, function(indexes, data) {
                         $("#datatable").append(
                             $.fn.RowTable(data)
@@ -205,15 +187,9 @@ $(document).ready(function() {
                         },
                         dataType: "json",
                         success: function(response) {
-                            $("#datatable").empty();
-                            $.fn.stoploading();
-                            if (response.data != undefined) {
-                                $("#datatable").append(
-                                    emptyRow
-                                );
-                                return;
-                            }
                             if (response) {
+                                $("#datatable").empty();
+                                $.fn.stoploading();
                                 $.each(response, function(indexes, data) {
                                     $("#datatable").append(
                                         $.fn.RowTable(data)
