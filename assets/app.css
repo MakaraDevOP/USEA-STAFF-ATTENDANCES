@@ -1,0 +1,11 @@
+
+.html{
+    scroll-behavior: smooth;
+}
+.body{
+    font-family: 'Roboto';
+    font-size: 14px;
+}
+.font-kh{
+    font-family: 'Khmer OS Content';
+}

@@ -1,4 +1,4 @@
-        <div class="min-h-full">
+        <div class="">
             <nav class="bg-gray-900">
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div class="flex h-14 items-center justify-between">
@@ -9,11 +9,11 @@
                             <div class=" hidden md:block">
                                 <div class="ml-10 flex items-baseline space-x-4">
 
-                                    <a href="/staffAttendence/frontend/" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium <?php echo $page_content=="Home"? ' bg-gray-800 text-white': ' '   ?>">Dashboard</a>
+                                    <a href="/staffAttendence/frontend/dashboard/index.php" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium <?php echo $page_content=="Home"? ' bg-gray-800 text-white': ' '   ?>">Dashboard</a>
                                     <a href="/staffAttendence/frontend/user/index.php" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium <?php echo $page_content=="Staff"? ' bg-gray-800 text-white': ' '   ?>">Staff</a>
                                     <a href="/staffAttendence/frontend/department/index.php" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium <?php echo $page_content=="Department"? ' bg-gray-800 text-white': ' '   ?>">Department</a>
-                                    <a href="/staffAttendence/frontend/attendence/index.php" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium <?php echo $page_content=="Attendence"? ' bg-gray-800 text-white': ' '   ?>">Attendence</a>
-                                    <a href="/staffAttendence/frontend/report/index.php" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium <?php echo $page_content=="Report Center"? ' bg-gray-800 text-white': ' '   ?>">Reports</a>
+                                    <a href="/staffAttendence/frontend/attendence/index.php" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium <?php echo $page_content=="Attendence"? ' bg-gray-800 text-white': ' '   ?>">Attendance</a>
+                                    <a href="/staffAttendence/frontend/report/index.php" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium <?php echo $page_content=="Report"? ' bg-gray-800 text-white': ' '   ?>">Reports</a>
                                 </div>
                             </div>
                         </div>
@@ -29,20 +29,20 @@
 
                                 <!-- Profile dropdown -->
                                 <div class="relative ml-3">
-                                    <div>
-                                        <button type="button" class="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                    <div class="">
+                                        <button type="button" class=" drob-menu-setting flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                             <span class="sr-only">Open user menu</span>
                                             <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
                                         </button>
                                     </div>
 
-                                    <div class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none hidden" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                                    <div class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none  " role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                                         <!-- Active: "bg-gray-100", Not Active: "" -->
-                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
-
-                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
-
-                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
+                                        <div class="w-full text-left ">
+                                            <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</button>
+                                            <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</button>
+                                            <button class="block px-4 py-2 text-sm text-red-700 hover:bg-red-100 bg-red-50  w-full btn-logout-system" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -61,6 +61,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- Phone View -->
                 <div class="md:hidden" id="mobile-menu">
                     <div class="space-y-1 px-2 pt-2 pb-3 sm:px-3">
                         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
@@ -100,6 +101,8 @@
                         </div>
                     </div>
                 </div>
+                <!-- Phone View -->
+
             </nav>
             <header class="bg-white shadow">
                 <div class="mx-auto max-w-7xl py-2 px-4 sm:px-6 lg:px-8">
@@ -107,3 +110,42 @@
                 </div>
             </header>
         </div>
+        <script>
+$(document).ready(function() {
+    // Show hide popover
+    $(".drob-menu-setting").click(function() {
+        // $(this).find(".dropdown-menu").toggleClass("hidden");
+        $(".dropdown-menu").toggleClass("hidden");
+    });
+    $(".btn-logout-system").click(function() {
+        $.fn.startloading();
+        $.ajax({
+            type: "POST",
+            url: '/staffAttendence/backend/loginHandler.php',
+            data: {
+                mode: "logout",
+            },
+            dataType: "json",
+            success: function(response) {
+                $.fn.stoploading();
+                if (typeof response == 'object' && response.error != null) {
+                    swal("Errors ", response.error, "error");
+                    return;
+                }
+                if (response) {
+                    swal("Successfully ", "Operation was successfully processed ", "success");
+                    window.setTimeout('location.reload()', 1000);
+                }
+            }
+        });
+    })
+});
+$(document).on("click", function(event) {
+    var $trigger = $(".drob-menu-setting");
+    if ($(this) != $('.dropdown-menu')) {
+        if ($trigger !== event.target && !$trigger.has(event.target).length) {
+            $(".dropdown-menu").addClass("hidden");
+        }
+    }
+});
+        </script>

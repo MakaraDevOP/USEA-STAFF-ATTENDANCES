@@ -1,6 +1,7 @@
     <?php
     $page_content = "Staff";
     $page_title ="Staff Management : Create";
+    require_once('../../backend/auth.php');
     include('../master/header.php');
     include('../master/navbar.php');
 ?>

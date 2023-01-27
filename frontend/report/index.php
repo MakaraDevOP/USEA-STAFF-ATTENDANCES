@@ -1,12 +1,12 @@
 <?php
-    $page_content = "Staff";
-    $page_title ="Staff Management";
+    $page_content = "Report";
+    $page_title ="Report Center";
     include('../master/header.php');
     include('../master/navbar.php');
     include('../../backend/connection.php');
 ?>
 <main>
-    <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-screen-2xl py-6 sm:px-6 lg:px-8">
         <!-- Replace with your content -->
         <div class="px-4 sm:px-0">
             <div class="">
@@ -103,6 +103,13 @@ $(document).ready(function() {
             timer: 500,
         });
     }
+    var emptyRow = `
+        <tr class="hover:bg-gray-100">
+            <td colspan="8" class="py-2 px-6 text-sm text-center  text-gray-900 whitespace-nowrap ">
+                No record found 👻
+            </td>
+        </tr>
+    `;
     $.fn.RowTable = function(data) {
         var Row = `
             <tr class="hover:bg-gray-100">
@@ -158,9 +165,15 @@ $(document).ready(function() {
             },
             dataType: "json",
             success: function(response) {
+                $("#datatable").empty();
+                $.fn.stoploading();
                 if (response) {
-                    $("#datatable").empty();
-                    $.fn.stoploading();
+                    $("#datatable").append(
+                        emptyRow
+                    );
+                    return;
+                }
+                if (response) {
                     $.each(response, function(indexes, data) {
                         $("#datatable").append(
                             $.fn.RowTable(data)

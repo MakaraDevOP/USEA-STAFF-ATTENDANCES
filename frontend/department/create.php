@@ -1,6 +1,7 @@
     <?php
         $page_content = "Department";
     $page_title ="Department :create";
+    require_once('../../backend/auth.php');
     include('../master/header.php');
     include('../master/navbar.php');
 ?>
