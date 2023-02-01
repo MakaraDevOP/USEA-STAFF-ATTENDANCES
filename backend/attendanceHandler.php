@@ -30,6 +30,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $attendance = new Attendance();
         $attendance->ListToday($_GET);
     }
+    if($_GET['mode'] =='filter'){
+      $attendance = new Attendance();
+      $attendance->Filter($_GET);
+    }
 }
 
 ?>

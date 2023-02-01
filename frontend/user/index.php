@@ -7,7 +7,7 @@
     include('../master/navbar.php');
 ?>
 <main>
-    <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-screen-2xl py-6 sm:px-6 lg:px-8">
         <!-- Replace with your content -->
         <div class="px-4 sm:px-0">
             <div class="">
@@ -36,10 +36,10 @@
                     </div>
                     <!-- <hr class="mt-5 border border-slate-100"> -->
                 </div>
-                <div class="overflow-x-auto shadow-sm">
+                <div class="overflow-x-auto  shadow-sm h-[calc(100vh-250px)]">
                     <div class="inline-block min-w-full align-middle">
                         <div class="overflow-hidden">
-                            <table class="min-w-full divide-y divide-gray-200 table-fixed ">
+                            <table class="min-w-full divide-y-2 divide-gray-200 table-fixed ">
                                 <thead class="bg-gray-50 dark:bg-gray-700">
                                     <tr>
                                         <th scope="col" class="font-medium  py-3 px-6 tracking-wider text-left text-gray-700 uppercase ">
@@ -68,13 +68,18 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody class="bg-white divide-y divide-gray-200 " id="datatable">
+                                <tbody class="bg-white divide-y-2 divide-gray-200 " id="datatable">
                                     <!-- Data Table -->
                                 </tbody>
 
                             </table>
                         </div>
                     </div>
+                </div>
+                <div class="mt-4">
+                    <ul class="inline-flex -space-x-px py-1 " id="pagination">
+
+                    </ul>
                 </div>
             </div>
         </div>
@@ -110,7 +115,7 @@ $(document).ready(function() {
     `;
     $.fn.RowTable = function(data) {
         var Row = `
-            <tr class="hover:bg-gray-100">
+            <tr class="hover:bg-gray-100 border-y-2">
                     <td class="py-2 px-6 text-sm text-gray-900 whitespace-nowrap ">
                         ${data['code']}
                     </td>
@@ -155,35 +160,82 @@ $(document).ready(function() {
         return Row;
     };
 
-    $.fn.GetList = function() {
+    $.fn.Pagination = function(data) {
+        let link = "";
+        if (data != null) {
+
+            for (var i = 1; i <= data.page; i++) {
+                if (i == data.page_number) {
+                    link += `<li>
+                        <button type="button"   onclick="$.fn.linkPage(${Number(i)})" data-page="${Number(i)}" class="link-btnn-page bg-blue-100 border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3 ">${i}</button>
+                </li>`;
+                } else {
+                    link += `
+                 <li>
+                        <button type="button" onclick="$.fn.linkPage(${Number(i)})" data-page="${Number(i)}" class="link-btnn-page bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3 ">${i}</button>
+                </li>`;
+                }
+
+            }
+        }
+
+        const prewpage = `
+     <li>
+            <button type="button" ${data.page_number ==1?'disabled':''}  onclick="$.fn.linkPage(${Number(data.page_number)-1})" data-page="${Number(data.page_number)-1}"  class="link-btnn-page  ${data.page_number==1?'bg-gray-200 text-gray-400':'bg-white hover:bg-gray-100 hover:text-gray-700'}   border border-gray-300 text-gray-500  rounded-l-lg leading-tight py-2 px-3 ">Previous</button>
+    </li>`;
+
+        const nextpage = `
+    <li >
+        <button ${data.page_number ==data.page?'disabled':''} onclick="$.fn.linkPage(${Number(data.page_number)+1})" type="button" data-page="${Number(data.page_number)+1}" class="link-btnn-page ${data.page_number==data.page?'bg-gray-200 text-gray-400':'bg-white hover:bg-gray-100 hover:text-gray-700'}   border border-gray-300 text-gray-500  rounded-r-lg leading-tight py-2 px-3 ">Next</button >
+    </li>
+     `;
+        const page = prewpage + link + nextpage;
+        return page;
+    }
+    let pagenum = 1;
+    let per_page = 15;
+    $.fn.GetList = function(pagenum) {
         $.fn.startloading();
         $.ajax({
             type: "GET",
             url: '/staffAttendence/backend/userHandler.php',
             data: {
                 mode: 'list',
+                per_page: per_page,
+                page_number: pagenum
             },
             dataType: "json",
             success: function(response) {
                 $("#datatable").empty();
                 $.fn.stoploading();
-                if (response.data != undefined) {
+                if (response.data.length < 0) {
                     $("#datatable").append(
                         emptyRow
                     );
                     return;
                 }
-                if (response) {
-                    $.each(response, function(indexes, data) {
+                if (response.data) {
+
+                    $.each(response.data, function(indexes, data) {
                         $("#datatable").append(
                             $.fn.RowTable(data)
                         );
                     });
+                    $('#pagination').empty();
+                    $('#pagination').append(
+                        $.fn.Pagination(response.paginate)
+                    )
                 }
             }
         });
     }
-    $.fn.GetList();
+    $.fn.GetList(pagenum);
+
+    $.fn.linkPage = function(e) {
+        pagenum = e;
+        $.fn.GetList(e);
+
+    }
     $("#btn-search").click(function() {
         var search = $('#table-search').val();
         $.fn.startloading();
@@ -196,30 +248,36 @@ $(document).ready(function() {
                         url: '/staffAttendence/backend/userHandler.php',
                         data: {
                             mode: 'search',
-                            search: search
+                            search: search,
+                            per_page: per_page,
+                            page_number: pagenum
                         },
                         dataType: "json",
                         success: function(response) {
                             $("#datatable").empty();
                             $.fn.stoploading();
-                            if (response.data != undefined) {
+                            if (response.data.length < 0) {
                                 $("#datatable").append(
                                     emptyRow
                                 );
                                 return;
                             }
-                            if (response) {
-                                $.each(response, function(indexes, data) {
+                            if (response.data) {
+
+                                $.each(response.data, function(indexes, data) {
                                     $("#datatable").append(
                                         $.fn.RowTable(data)
                                     );
                                 });
-                                // swal("Successfully ", "Operation was successfully processed ", "success");
+                                $('#pagination').empty();
+                                $('#pagination').append(
+                                    $.fn.Pagination(response.paginate)
+                                )
                             }
                         }
                     })
                 } else {
-                    $.fn.GetList();
+                    $.fn.GetList(pagenum);
                     $.fn.stoploading()
                 }
             }
@@ -267,7 +325,7 @@ $(document).ready(function() {
                 if (response) {
                     swal("Successfully ", "Operation was successfully processed ", "success");
                 }
-                $.fn.GetList();
+                $.fn.GetList(pagenum);
             }
         });
     }

@@ -12,9 +12,18 @@
        private $date_clock_out;
        private $work_time;
        private $note;
-    public function List(){
+    public function List($data){
         $db = new Database();
-        $sql="SELECT * FROM  view_attendances_list ORDER BY date DESC";
+        // $search = $data['search'];
+        $from = $data['from'];
+        $to = $data['to'];
+        $department = $data['department'];
+        // echo json_encode($department);
+        if($department =='all'){
+            $sql="SELECT * FROM  view_attendances_list  Where date  between '$from' and DATE_ADD('$to',INTERVAL 1 DAY)  ORDER BY date DESC";
+        }else{
+            $sql="SELECT * FROM  view_attendances_list  Where date  between '$from' and DATE_ADD('$to',INTERVAL 1 DAY) and depart_id='$department' ORDER BY date DESC";
+        }
         $result = $db->mysqli->query($sql);
         $obj =[];
         while( $row = $result->fetch_assoc()){
@@ -24,11 +33,34 @@
              $errorr =  array('data' =>'No record!' );
              exit(json_encode( $errorr));
         }
-        echo json_encode($obj);
+        // echo json_encode($obj);
+        $total_record = sizeof($obj);
+        $per_page = $data['per_page'];
+        $page_number= $data['page_number'];
+        $initial_page = ($page_number-1) * $per_page; 
+        $page = ceil($total_record/$per_page);
+        if($department =='all'){
+            $getStaffSql = "SELECT * FROM  view_attendances_list Where date  between '$from' and DATE_ADD('$to',INTERVAL 1 DAY)   ORDER BY date DESC LIMIT ".$initial_page.','.$per_page;
+        }else{
+            $getStaffSql = "SELECT * FROM  view_attendances_list Where date  between '$from' and DATE_ADD('$to',INTERVAL 1 DAY)  and depart_id='$department' ORDER BY date DESC LIMIT ".$initial_page.','.$per_page;
+        }
+        $result1 = $db->mysqli->query($getStaffSql);
+        // echo json_encode($result1);
+        $obj1 =[];
+        while( $row1 = $result1->fetch_assoc()){
+            array_push($obj1,$row1);
+        }
+        $dataPagination = [
+            'page' =>$page,
+            'page_number'=>$page_number,
+            'per_page'=>$per_page
+        ];
+        $dataPage = array('data'=>$obj1 , 'paginate'=>$dataPagination);
+        echo json_encode($dataPage);
     }
     public function ListToday(){
         $db = new Database();
-        $sql="SELECT * FROM  view_attendances_list  WHERE DATE(date)=CURDATE() ORDER BY date DESC";
+        $sql="SELECT * FROM  view_attendances_list  WHERE DATE(date)=CURDATE()  ORDER BY date DESC";
         $result = $db->mysqli->query($sql);
         $obj =[];
         while( $row = $result->fetch_assoc()){
@@ -54,11 +86,6 @@
          $device_name = $os[0]['device']."-".$os[0]['os']."-".$bs[0];
 
         $db = new Database();
-        // $getName = "SELECT * FROM attendances WHERE name='$name'";
-        // $getCode= "SELECT * FROM attendances WHERE code_name='$code'";
-        // $selectCode =  $db->mysqli->query($getCode); 
-        // $selectName =  $db->mysqli->query($getName); 
-        // // ការកំណត់ មិនស្ទួន  Code 
         if(empty($date_clock_in)){
              $errorr =  array('error' =>'This date_clock_in is reqired' );
             exit(json_encode($errorr));
@@ -106,53 +133,19 @@
         $result = $db->mysqli->query($sql);
         echo json_encode($result);
     }
-    public function Insert($data){
-        $name =  $data['name'];
-        $code =  $data['code_name'];
-        $description =  $data['description'];
-
-        $db = new Database();
-        $getName = "SELECT * FROM attendances WHERE name='$name'";
-        $getCode= "SELECT * FROM attendances WHERE code_name='$code'";
-        $selectCode =  $db->mysqli->query($getCode); 
-        $selectName =  $db->mysqli->query($getName); 
-        // ការកំណត់ មិនស្ទួន  Code 
-        if($selectCode->num_rows > 0){
-             $errorr =  array('error' =>'This code is already being used' );
-            exit(json_encode($errorr));
-        }
-        // ការកំណត់ មិនស្ទួន Email
-        if($selectName->num_rows > 0){
-             $errorr =  array('error' =>'This name is already being used' );
-            exit(json_encode($errorr));
-        } 
-        $sql="INSERT INTO attendances (name,code_name, description) VALUES ('$name','$code','$description')";
-        $result = $db->mysqli->query($sql);
-        echo json_encode($result);
-    }
-    public function Edit($data){
-        $db = new Database();
-        $id = $data['id'];
-        $sql="SELECT * FROM  attendances WHERE id=$id";
-        $result = $db->mysqli->query($sql);
-        $row = $result->fetch_assoc();
-        echo json_encode($row);
-    }
-    public function Update($data){
-        $id= $data['id'];
-        $name =  $data['name'];
-        $code =  $data['code_name'];
-        $description =  $data['description'];
-        
-        $db = new Database();
-        $sql="UPDATE attendances  SET name='$name',code_name='$code',description='$description' WHERE id=$id";
-        $result = $db->mysqli->query($sql);
-        echo json_encode($result);
-    }
-    public function Search($data){
+    public function Filter($data){
         $db = new Database();
         $search = $data['search'];
-        $sql="SELECT * FROM  attendances WHERE  name LIKE '%$search%' OR code_name LIKE '%$search%'";
+        $from = $data['from'];
+        $to = $data['to'];
+        $department = $data['department'];
+        // echo json_encode($department);
+
+        if($department =='all'){
+        $sql="SELECT * FROM  view_attendances_list   WHERE   date >= '$from' and date <='$to' AND name LIKE '%$search%' ";
+        }else{
+        $sql="SELECT * FROM  view_attendances_list   WHERE   date >= '$from' and date <='$to' AND name LIKE '%$search%' and depart_id='$department' ";
+        }
         $result = $db->mysqli->query($sql);
         $obj =[];
         while( $row = $result->fetch_assoc()){
@@ -162,21 +155,31 @@
              $errorr =  array('data' =>'No record!' );
              exit(json_encode( $errorr));
         }
-        echo json_encode($obj);
-    }
-    public function Destroy($data){
-        $id= $data['id'];        
-        $db = new Database();
-        $getUser = "SELECT * FROM attendances WHERE id=$id";
-        $selectUser =  $db->mysqli->query($getUser); 
-        // Existing
-        if($selectUser->num_rows < 0){
-             $errorr =  array('error' =>'This department is not exist' );
-            exit(json_encode($errorr));
-        } 
-        $sql="DELETE FROM  attendances WHERE id=$id";
-        $result = $db->mysqli->query($sql);
-        echo json_encode($result);
+        
+        $total_record = sizeof($obj);
+        $per_page = $data['per_page'];
+        $page_number= $data['page_number'];
+        $initial_page = ($page_number-1) * $per_page; 
+        $page = ceil($total_record/$per_page);
+        if($department =='all'){
+           $getStaffSql = "SELECT * FROM  view_attendances_list WHERE   date >= '$from' and date <='$to' AND name LIKE '%$search%' ORDER BY date DESC LIMIT ".$initial_page.','.$per_page;
+        }else{
+            $getStaffSql = "SELECT * FROM  view_attendances_list WHERE   date >= '$from' and date <='$to' AND name LIKE '%$search%' and depart_id='$department'  ORDER BY date DESC LIMIT ".$initial_page.','.$per_page;
+        }
+        $result1 = $db->mysqli->query($getStaffSql);
+        // echo json_encode($result1);
+        $obj1 =[];
+        while( $row1 = $result1->fetch_assoc()){
+            array_push($obj1,$row1);
+        }
+        // echo json_encode($obj1);
+        $dataPagination = [
+            'page' =>$page,
+            'page_number'=>$page_number,
+            'per_page'=>$per_page
+        ];
+        $dataPage = array('data'=>$obj1 , 'paginate'=>$dataPagination);
+        echo json_encode($dataPage);
     }
  }
 

@@ -2,6 +2,7 @@
     $page_content = "Staff";
     $page_title ="Staff Management : Update";
     require_once('../../backend/auth.php');
+    require_once('../../backend/adminAuth.php');
     include('../master/header.php');
     include('../master/navbar.php');
     // include('../../backend/connection.php');

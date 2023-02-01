@@ -12,19 +12,38 @@
        private $password;
        private $depart_id;
 
-    public function List(){
+    public function List($data){
         $db = new Database();
         $sql="SELECT * FROM  view_staff_list ORDER BY code ASC";
         $result = $db->mysqli->query($sql);
         $obj =[];
         while( $row = $result->fetch_assoc()){
-           array_push($obj,$row);
+            array_push($obj,$row);
         }
         if(empty($obj)){
-          $errorr =  array('data' =>'No record!' );
-             exit(json_encode( $errorr));
+            $errorr =  array('data' =>'No record!' );
+            exit(json_encode( $errorr));
         }
-        echo json_encode($obj);
+
+        $total_record = sizeof($obj);
+        $per_page = $data['per_page'];
+        $page_number= $data['page_number'];
+        $initial_page = ($page_number-1) * $per_page; 
+        $page = ceil($total_record/$per_page);
+        $getStaffSql = "SELECT * FROM  view_staff_list ORDER BY code ASC LIMIT ".$initial_page.','.$per_page;
+        $result1 = $db->mysqli->query($getStaffSql);
+        // echo json_encode($result1);
+        $obj1 =[];
+        while( $row1 = $result1->fetch_assoc()){
+            array_push($obj1,$row1);
+        }
+        $dataPagination = [
+            'page' =>$page,
+            'page_number'=>$page_number,
+            'per_page'=>$per_page
+        ];
+        $dataPage = array('data'=>$obj1 , 'paginate'=>$dataPagination);
+        echo json_encode($dataPage);
     }
     public function Insert($data){
         $name =  $data['name'];
@@ -90,7 +109,26 @@
              $errorr =  array('data' =>'No record!' );
              exit(json_encode( $errorr));
         }
-        echo json_encode($obj);
+        $total_record = sizeof($obj);
+        $per_page = $data['per_page'];
+        $page_number= $data['page_number'];
+        $initial_page = ($page_number-1) * $per_page; 
+        $page = ceil($total_record/$per_page);
+        $getStaffSql = "SELECT * FROM  view_staff_list   WHERE id LIKE '%$search%' OR name LIKE '%$search%' OR code LIKE '%$search%' ORDER BY code ASC LIMIT ".$initial_page.','.$per_page;
+        $result1 = $db->mysqli->query($getStaffSql);
+        // echo json_encode($result1);
+        $obj1 =[];
+        while( $row1 = $result1->fetch_assoc()){
+            array_push($obj1,$row1);
+        }
+        $dataPagination = [
+            'page' =>$page,
+            'page_number'=>$page_number,
+            'per_page'=>$per_page
+        ];
+        $dataPage = array('data'=>$obj1 , 'paginate'=>$dataPagination);
+        echo json_encode($dataPage);
+        // echo json_encode($obj);
     }
     public function Destroy($data){
         $id= $data['id'];        

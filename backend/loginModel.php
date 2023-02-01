@@ -22,7 +22,7 @@
             $errorr =  array('error' =>'This password is not exist ' );
             exit(json_encode($errorr));
         } 
-        $sql="SELECT * FROM users WHERE  email='$name' AND password='$password' AND status=1";
+        $sql="SELECT * FROM view_staff_list WHERE  email='$name' AND password='$password' AND status=1";
         $result = $db->mysqli->query($sql);
         $row = $result->fetch_assoc();
         if($row==null){
@@ -33,6 +33,11 @@
         $_SESSION['users'] =$row['name'];
         $_SESSION['role'] =$row['role'];
         $_SESSION['userid'] =$row['id'];
+        $_SESSION['department'] =$row['depart_name'];
+        $_SESSION['department_code'] =$row['code_name'];
+        $_SESSION['email'] =$row['email'];
+        $_SESSION['phone'] =$row['phone'];
+
         // SET AUTH SESSION
         echo json_encode($row);
     }

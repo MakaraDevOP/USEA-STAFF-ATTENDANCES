@@ -2,11 +2,12 @@
     $page_content = "Department";
     $page_title ="Department";
     require_once('../../backend/auth.php');
+    require_once('../../backend/adminAuth.php');
     include('../master/header.php');
     include('../master/navbar.php');
 ?>
 <main>
-    <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-screen-2xl py-6 sm:px-6 lg:px-8">
         <!-- Replace with your content -->
         <div class="px-4 sm:px-0">
             <div class="">
@@ -28,7 +29,7 @@
                             <i class="fa-solid fa-plus"></i>
                             <span>Add</span>
                         </button>
-                        <button id="btn-delete" class="bg-gray-800 hover:bg-gray-700 rounded-lg flex space-x-2 px-3 py-2  items-center justify-center text-gray-50 hover:shadow-xl transition duration-150   text-sm ">
+                        <button id="btn-delete" class=" hidden bg-gray-800 hover:bg-gray-700 rounded-lg flex space-x-2 px-3 py-2  items-center justify-center text-gray-50 hover:shadow-xl transition duration-150   text-sm ">
                             <i class="fa-solid fa-trash"></i>
                             <span>Delete</span>
                         </button>
@@ -38,7 +39,7 @@
                 <div class="overflow-x-auto shadow-sm">
                     <div class="inline-block min-w-full align-middle">
                         <div class="overflow-hidden">
-                            <table class="min-w-full divide-y divide-gray-200 table-fixed ">
+                            <table class="min-w-full divide-y-2 divide-gray-200 table-fixed ">
                                 <thead class="bg-gray-50 dark:bg-gray-700">
                                     <tr>
                                         <th scope="col" class="font-medium py-3 px-6 tracking-wider text-left text-gray-700 uppercase ">
@@ -55,7 +56,7 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody class="bg-white divide-y divide-gray-200 " id="datatable">
+                                <tbody class="bg-white divide-y-2 divide-gray-200 " id="datatable">
                                     <!-- Data Table -->
                                 </tbody>
 

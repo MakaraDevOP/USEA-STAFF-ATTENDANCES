@@ -83,10 +83,18 @@
         $id= $data['id'];        
         $db = new Database();
         $getUser = "SELECT * FROM departments WHERE id=$id";
+        $getDepartUser = "SELECT * FROM users WHERE depart_id=$id";
+
         $selectUser =  $db->mysqli->query($getUser); 
+        $selectDepartUser =  $db->mysqli->query($getDepartUser); 
+
         // Existing
         if($selectUser->num_rows < 0){
              $errorr =  array('error' =>'This department is not exist' );
+            exit(json_encode($errorr));
+        } 
+        if($selectDepartUser->num_rows > 0){
+             $errorr =  array('error' =>'This department is used by user , if you want delete please delete users first');
             exit(json_encode($errorr));
         } 
         $sql="DELETE FROM  departments WHERE id=$id";

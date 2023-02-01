@@ -2,6 +2,7 @@
       $page_content = "Department";
     $page_title ="Department: Update";
     require_once('../../backend/auth.php');
+    require_once('../../backend/adminAuth.php');
     include('../master/header.php');
     include('../master/navbar.php');
     // include('../../backend/connection.php');

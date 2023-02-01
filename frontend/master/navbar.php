@@ -10,10 +10,11 @@
                                 <div class="ml-10 flex items-baseline space-x-4">
 
                                     <a href="/staffAttendence/frontend/dashboard/index.php" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium <?php echo $page_content=="Home"? ' bg-gray-800 text-white': ' '   ?>">Dashboard</a>
+                                    <?php  if($_SESSION['role'] == "Admin"){ ?>
                                     <a href="/staffAttendence/frontend/user/index.php" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium <?php echo $page_content=="Staff"? ' bg-gray-800 text-white': ' '   ?>">Staff</a>
                                     <a href="/staffAttendence/frontend/department/index.php" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium <?php echo $page_content=="Department"? ' bg-gray-800 text-white': ' '   ?>">Department</a>
+                                    <?php  }?>
                                     <a href="/staffAttendence/frontend/attendence/index.php" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium <?php echo $page_content=="Attendence"? ' bg-gray-800 text-white': ' '   ?>">Attendance</a>
-                                    <a href="/staffAttendence/frontend/report/index.php" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium <?php echo $page_content=="Report"? ' bg-gray-800 text-white': ' '   ?>">Reports</a>
                                 </div>
                             </div>
                         </div>
@@ -39,9 +40,9 @@
                                     <div class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none  " role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                                         <!-- Active: "bg-gray-100", Not Active: "" -->
                                         <div class="w-full text-left ">
-                                            <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</button>
-                                            <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</button>
-                                            <button class="block px-4 py-2 text-sm text-red-700 hover:bg-red-100 bg-red-50  w-full btn-logout-system" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</button>
+                                            <a href="/staffAttendence/frontend/user/profile.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
+                                            <!-- <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</button> -->
+                                            <button class="block px-4 py-2 text-sm text-red-700 hover:bg-red-100 bg-red-50 text-left  w-full btn-logout-system" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</button>
                                         </div>
                                     </div>
                                 </div>
@@ -93,10 +94,8 @@
                             </button>
                         </div>
                         <div class="mt-3 space-y-1 px-2 hidden">
-                            <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Your Profile</a>
-
-                            <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Settings</a>
-
+                            <a href="/staffAttendence/frontend/user/profile.php" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Your Profile</a>
+                            <!-- <a href="" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Settings</a> -->
                             <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Sign out</a>
                         </div>
                     </div>
@@ -118,7 +117,7 @@ $(document).ready(function() {
         $(".dropdown-menu").toggleClass("hidden");
     });
     $(".btn-logout-system").click(function() {
-        $.fn.startloading();
+        // $.fn.startloading();
         $.ajax({
             type: "POST",
             url: '/staffAttendence/backend/loginHandler.php',
@@ -127,7 +126,7 @@ $(document).ready(function() {
             },
             dataType: "json",
             success: function(response) {
-                $.fn.stoploading();
+                // $.fn.stoploading();
                 if (typeof response == 'object' && response.error != null) {
                     swal("Errors ", response.error, "error");
                     return;

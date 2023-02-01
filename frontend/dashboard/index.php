@@ -98,7 +98,7 @@
                         <!-- Description -->
                         <div class="col-span-4 ">
                             <p class="text-gray-600  font-bold font-kh ">ទីតាំងច្រើនបំផុត</p>
-                            <p class="text-gray-400 font-kh text-sm"><?php  echo $toplocation?><span class="px-1 mx-2 rounded bg-blue-400 text-white mt-[-10px]"><?php  echo $top?></span></p>
+                            <p class="text-gray-400 font-kh text-sm"><?php  echo $toplocation?><span class="px-2 mx-2 rounded bg-blue-400 text-white mt-[-10px]"><?php  echo $top?></span></p>
                         </div>
                         <!-- Price -->
                         <div>
@@ -116,7 +116,7 @@
                 <div class="overflow-x-auto shadow">
                     <div class="inline-block min-w-full align-middle">
                         <div class="overflow-hidden">
-                            <table class="min-w-full divide-y divide-gray-200 table-fixed ">
+                            <table class="min-w-full divide-y-2 divide-gray-200 table-fixed ">
                                 <thead class="bg-gray-50 dark:bg-gray-700">
                                     <tr>
                                         <!-- <th scope="col" class="p-4">
@@ -143,7 +143,7 @@
 
                                     </tr>
                                 </thead>
-                                <tbody class="bg-white divide-y divide-gray-200 " id="datatable">
+                                <tbody class="bg-white divide-y-2 divide-gray-200 " id="datatable">
 
                                 </tbody>
                             </table>

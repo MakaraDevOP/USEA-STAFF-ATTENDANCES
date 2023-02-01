@@ -1,9 +1,12 @@
 <?php
     $page_content = "Report";
     $page_title ="Report Center";
+    require_once('../../backend/auth.php');
+    require_once('../../backend/adminAuth.php');
     include('../master/header.php');
     include('../master/navbar.php');
     include('../../backend/connection.php');
+
 ?>
 <main>
     <div class="mx-auto max-w-screen-2xl py-6 sm:px-6 lg:px-8">
@@ -41,10 +44,10 @@
                     </div>
                     <!-- <hr class="mt-5 border border-slate-100"> -->
                 </div>
-                <div class="overflow-x-auto shadow-sm">
+                <div class="overflow-x-auto shadow">
                     <div class="inline-block min-w-full align-middle">
                         <div class="overflow-hidden">
-                            <table class="min-w-full divide-y divide-gray-200 table-fixed ">
+                            <table class="min-w-full divide-y-2 divide-gray-200 table-fixed ">
                                 <thead class="bg-gray-50 dark:bg-gray-700">
                                     <tr>
                                         <th scope="col" class="font-bold text-md py-3 px-6 tracking-wider text-left text-gray-700 uppercase ">
@@ -70,7 +73,7 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody class="bg-white divide-y divide-gray-200 " id="datatable">
+                                <tbody class="bg-white divide-y-2 divide-gray-200 " id="datatable">
                                     <!-- Data Table -->
                                 </tbody>
 
@@ -183,7 +186,7 @@ $(document).ready(function() {
             }
         });
     }
-    $.fn.GetList();
+    // $.fn.GetList();
     $("#btn-search").click(function() {
         var search = $('#table-search').val();
         $.fn.startloading();
